@@ -14,11 +14,6 @@ export async function getLocation() {
         throw 'Permission to access location was denied';
     }
 
-    // `enableHighAccuracy` is needed for Android Emulator
-    // https://github.com/expo/expo/issues/5504#issuecomment-526630788 ¯\_(ツ)_/¯
-    if (Platform.OS === 'android' && !Constants.isDevice) {
-        return Location.getCurrentPositionAsync( { enableHighAccuracy: true });
-    } else {
-        return Location.getCurrentPositionAsync({ });
-    }
+    // location does not need high accuracy - last position is *fine*
+    return Location.getLastKnownPositionAsync();
 }

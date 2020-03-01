@@ -1,32 +1,55 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import * as LocationService from './LocationService';
+import * as WeatherClient from './WeatherClient';
 
 export default function App() {
-  const [location, setLocation] = useState({ latitude: null, longitude: null });
+  const [state, setState] = useState({
+    city: null,
+    currentWeather: {
+      description: null,
+      temperature: null,
+    }
+  });
 
   useEffect(() => {
     let cancelled = false;
 
-    LocationService.getLocation()
-        .then(({ coords }) => {
-          if (!cancelled) {
-            setLocation(coords)
-          }
-        });
+    const refreshWeather = async () => {
+      const { coords } = await LocationService.getLocation();
+      const current = await WeatherClient.current(coords.latitude, coords.longitude);
+
+      if (cancelled) {
+        return
+      }
+
+      setState({
+        city: current.name,
+        currentWeather: {
+          description: current.weather[0].main,
+          temperature: current.main.temp
+        }
+      })
+    };
+
+    refreshWeather();
 
     return () => cancelled = true;
-  });
+  }, []);
 
   const loadingScreen = () => {
-    if (location.latitude === null || location.longitude === null) {
-      return <Text>Waiting for location...</Text>
+    if (state.city === null) {
+      return <Text>Waiting for weather data...</Text>
     }
   };
 
   const locationDisplay = () => {
-    if (location.latitude && location.longitude) {
-      return <Text>{location.latitude}, {location.longitude}</Text>
+    if (!!state.city) {
+      return <React.Fragment>
+        <Text>{state.city}</Text>
+        <Text>{state.currentWeather.description}</Text>
+        <Text>{state.currentWeather.temperature}</Text>
+      </React.Fragment>
     }
   };
 
