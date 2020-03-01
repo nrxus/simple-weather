@@ -1,11 +1,11 @@
 import React from 'react';
-import * as LocationService from '../LocationService';
+import * as LocationClient from '../LocationClient';
 import * as WeatherClient from '../WeatherClient';
 
 import App from '../App';
 import {act, render} from '@testing-library/react-native';
 
-jest.mock('../LocationService');
+jest.mock('../LocationClient');
 jest.mock('../WeatherClient');
 
 describe('<App />', () => {
@@ -14,13 +14,13 @@ describe('<App />', () => {
     });
 
     test('starts waiting', () => {
-        LocationService.getLocation.mockReturnValue(new Promise(() => {}));
+        LocationClient.getLocation.mockReturnValue(new Promise(() => {}));
         const {queryByText} = render(<App/>);
         expect(queryByText("Waiting for weather data...")).toBeTruthy();
     });
 
     test('displays weather data', async () => {
-        const locationMock = LocationService.getLocation.mockResolvedValue({
+        const locationMock = LocationClient.getLocation.mockResolvedValue({
             coords: {
                 latitude: 35.2,
                 longitude: 43.2

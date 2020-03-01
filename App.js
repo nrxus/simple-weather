@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import * as LocationService from './LocationService';
+import * as LocationClient from './LocationClient';
 import * as WeatherClient from './WeatherClient';
 
 export default function App() {
@@ -16,7 +16,7 @@ export default function App() {
     let cancelled = false;
 
     const refreshWeather = async () => {
-      const { coords } = await LocationService.getLocation();
+      const { coords } = await LocationClient.getLocation();
       const current = await WeatherClient.current(coords.latitude, coords.longitude);
 
       if (cancelled) {
