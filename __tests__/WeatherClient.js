@@ -26,6 +26,7 @@ describe('WeatherClient', () => {
             "name": "Tawarano"
         };
         fetch.mockResolvedValue({
+            status: 200,
             json: () => Promise.resolve(body)
         });
 
@@ -35,4 +36,14 @@ describe('WeatherClient', () => {
         expect(global.fetch).toHaveBeenCalledWith('https://api.openweathermap.org/data/2.5/weather?lat=56&lon=23.2&units=imperial&appid=API-KEY');
         expect(response).toEqual(body);
     });
+
+    test('current fails for non 200 codes', async () => {
+        fetch.mockResolvedValue({
+            status: 401,
+            json: () => Promise.resolve({})
+        });
+
+        await expect(WeatherClient.current(56, 23,2))
+            .rejects.toEqual('Not an OK response');
+    })
 });

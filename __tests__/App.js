@@ -41,15 +41,15 @@ describe('<App />', () => {
 
         const weatherMock = WeatherClient.current.mockResolvedValue(weather_response);
 
-        const {findByText} = render(<App/>);
+        const {getByText} = render(<App/>);
 
         await act(async () => {
             await locationMock;
             await weatherMock;
         });
 
-        expect(findByText("Tawarano")).toBeTruthy();
-        expect(findByText("285.514")).toBeTruthy();
-        expect(findByText("Clear")).toBeTruthy();
+        expect(getByText("Tawarano")).toBeTruthy();
+        expect(getByText("285.514")).toBeTruthy();
+        expect(getByText("Clear")).toBeTruthy();
     });
 });
