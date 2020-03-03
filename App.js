@@ -18,19 +18,20 @@ export default function App() {
 
         const refreshWeather = async () => {
             const {coords} = await LocationClient.getLocation();
-            const [current, nextEightDays] = await Promise.all([
-                WeatherClient.current(coords.latitude, coords.longitude),
-                WeatherClient.nextEightDays(coords.latitude, coords.longitude),
-            ]);
-
-            const forecast = nextEightDays.list.map(day => {
-                return {
-                    timestamp: day.dt,
-                    min: day.temp.min,
-                    max: day.temp.max,
-                    description: day.weather[0].main,
-                }
-            });
+            const current = await WeatherClient.current(coords.latitude, coords.longitude);
+            // const [current, nextEightDays] = await Promise.all([
+            //     WeatherClient.current(coords.latitude, coords.longitude),
+            //     WeatherClient.nextEightDays(coords.latitude, coords.longitude),
+            // ]);
+            //
+            // const forecast = nextEightDays.list.map(day => {
+            //     return {
+            //         timestamp: day.dt,
+            //         min: day.temp.min,
+            //         max: day.temp.max,
+            //         description: day.weather[0].main,
+            //     }
+            // });
 
             if (cancelled) {
                 return
@@ -42,7 +43,7 @@ export default function App() {
                     description: current.weather[0].main,
                     temperature: current.main.temp
                 },
-                forecast
+                // forecast
             })
         };
 
@@ -89,19 +90,19 @@ export default function App() {
         }
     };
 
-    const forecast = () => {
-        if (state.forecast.length === 0) {
-            return;
-        }
-        const today = state.forecast[0];
-        const day = getDay(today.timestamp);
-        return <Text>{getDay(today.timestamp)} - Today</Text>;
-    };
+    // const forecast = () => {
+    //     if (state.forecast.length === 0) {
+    //         return;
+    //     }
+    //     const today = state.forecast[0];
+    //     const day = getDay(today.timestamp);
+    //     return <Text>{getDay(today.timestamp)} - Today</Text>;
+    // };
 
     return (
         <View style={styles.container}>
             {weatherNow()}
-            {forecast()}
+            {/*{forecast()}*/}
             {loadingScreen()}
         </View>
     );
