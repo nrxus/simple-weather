@@ -16,7 +16,7 @@ export async function getLocation() {
     // location does not need high accuracy - last position is *fine*
     try {
         return await Location.getLastKnownPositionAsync();
-    } catch {
+    } catch (e) {
         // fall back to current position if there is no known last position
         // `enableHighAccuracy` is needed for Android Emulator
         // https://github.com/expo/expo/issues/5504#issuecomment-526630788 ¯\_(ツ)_/¯

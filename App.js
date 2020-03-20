@@ -34,7 +34,7 @@ export default function App() {
             // });
 
             if (cancelled) {
-                return
+                return;
             }
 
             setState({
@@ -44,7 +44,7 @@ export default function App() {
                     temperature: current.main.temp
                 },
                 // forecast
-            })
+            });
         };
 
         refreshWeather();
@@ -55,39 +55,41 @@ export default function App() {
     const getDay = (seconds) => {
         const day = new Date(seconds * 1000).getDay();
         switch (day) {
-            case 0:
-                return "Sunday";
-            case 1:
-                return "Monday";
-            case 2:
-                return "Tuesday";
-            case 3:
-                return "Wednesday";
-            case 4:
-                return "Thursday";
-            case 5:
-                return "Friday";
-            case 6:
-                return "Saturday";
-            default:
-                throw("getDay() should only return numbers from 0-6 but it didn't");
+        case 0:
+            return "Sunday";
+        case 1:
+            return "Monday";
+        case 2:
+            return "Tuesday";
+        case 3:
+            return "Wednesday";
+        case 4:
+            return "Thursday";
+        case 5:
+            return "Friday";
+        case 6:
+            return "Saturday";
+        default:
+            throw("getDay() should only return numbers from 0-6 but it didn't");
         }
-    }
+    };
 
     const loadingScreen = () => {
         if (state.city === null) {
-            return <Text>Waiting for weather data...</Text>
+            return <Text>Waiting for weather data...</Text>;
         }
+        return null;
     };
 
     const weatherNow = () => {
         if (!!state.city) {
             return <React.Fragment>
-                <Text>{state.city}</Text>
+       <Text>{state.city}</Text>
                 <Text>{state.currentWeather.description}</Text>
                 <Text>{state.currentWeather.temperature}</Text>
-            </React.Fragment>
+              </React.Fragment>;
         }
+        return null;
     };
 
     // const forecast = () => {
@@ -101,9 +103,9 @@ export default function App() {
 
     return (
         <View style={styles.container}>
-            {weatherNow()}
-            {/*{forecast()}*/}
-            {loadingScreen()}
+          {weatherNow()}
+          {/*{forecast()}*/}
+          {loadingScreen()}
         </View>
     );
 }
